@@ -1,4 +1,4 @@
-﻿using Azure.Identity;
+using Azure.Identity;
 using Microsoft.Graph;
 using Microsoft.Kiota.Authentication.Azure;
 using Microsoft.Kiota.Http.HttpClientLibrary;
@@ -6,7 +6,6 @@ using CustomGraph.Client;
 using CustomGraph.Client.Models;
 using Microsoft.Graph.Core.Requests;
 using CustomGraph.Client.Models.ODataErrors;
-using Microsoft.Graph.Requests;
 
 // The auth provider will only authorize requests to
 // the allowed hosts, in this case Microsoft Graph
@@ -84,7 +83,7 @@ var eventsRequest = customClient.Me.CalendarView
         });
 
 // Build the batch
-var batchRequestContent = new BatchRequestContentCollectionCustom(adapter);
+var batchRequestContent = new BatchRequestContentCollection(adapter);
 
 // Using AddBatchRequestStepAsync adds each request as a step
 // with no specified order of execution
@@ -93,7 +92,7 @@ var userRequestId = await batchRequestContent
 var eventsRequestId = await batchRequestContent
     .AddBatchRequestStepAsync(eventsRequest);
 
-var batchRequestBuilder = new CustomBatchRequestBuilder(adapter);
+var batchRequestBuilder = new BatchRequestBuilder(adapter);
 var returnedResponse = await batchRequestBuilder.PostAsync(batchRequestContent);
 
 // De-serialize response based on known return type
